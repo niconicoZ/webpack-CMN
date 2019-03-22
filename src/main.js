@@ -13,16 +13,31 @@ Vue.use(VueRouter)
 //6.1 导入自己的 router.js 路由模块
 import router from './router.js'
 
+
 //7. 导入 vue-resource包，并安装---发送ajax请求的
 import VueResource from 'vue-resource'
 Vue.use(VueResource)
+//全局配置 请求数据接口，并且 全局域名后面必须要加 / ，才会以 根路拼接径启用。
+Vue.http.options.root = 'http://localhost:5000/'
+//对于post请求 配置哪种表单数据方式提交，我们也可以全局配置
+Vue.http.options.emulateJSON = true;
+
+
+//8.利用node.js中的moment插件，定义一个全局时间格式化过滤器
+//8.1 npm i moment ,并导入
+import moment from 'moment'
+//8.2 定义全局过滤器Vue.filter('过滤器自定义名称'，回调函数function(代表需要格式化的值,pattern=''))
+Vue.filter('dataFormat',function(dataStr,pattern='YYYY-MM-DD HH:mm:ss'){
+   return moment(dataStr).format(pattern)
+})
 
 
 //4.按需 导入mint-ui 组件，并注册（头部，轮播图）
-import { Header,Swipe, SwipeItem } from 'mint-ui';
+import { Header,Swipe, SwipeItem, Button } from 'mint-ui';
 Vue.component(Header.name, Header);
 Vue.component(Swipe.name, Swipe);
 Vue.component(SwipeItem.name, SwipeItem);
+Vue.component(Button.name, Button);
 
 
 //5.导入 MUI 框架样式

@@ -11,10 +11,10 @@
     <!-- 4.3 代入 mint-ui 的九宫格 样式 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/news">
           <img src="./setutime/fz.jpg" alt="">
           <div class="mui-media-body">尼裙吹水  </div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -53,7 +53,9 @@
 <script>
 import { Toast } from "mint-ui";
 
+
 export default {
+  
   data() {
     return {
       lunbotuList: [] //7.3 VM实例中创建一个空数组，来接收后台数据，以便渲染。
@@ -66,8 +68,7 @@ export default {
   methods: {
     //7.1 利用resource 请求后端获取轮播图
     getLunbotu() {
-      this.$http.get("http://localhost:5000/api/getnewslist").then(result => {
-        console.log(result);
+      this.$http.get("api/getnewslist").then(result => {
         if (result.body.status === 0) {
           this.lunbotuList = result.body.message;
         } else {
@@ -75,6 +76,27 @@ export default {
         }
       });
     }
+
+    // async getLunbotu() {
+    //   const result = await this.$http.get("http://localhost:5000/api/getnewslist");
+    //   const {
+    //     data: { status, message }
+    //   } = result;
+    //     if (status === 0) {
+    //       this.lunbotuList = message;
+    //     } else {
+    //       Toast("获取失败");
+    //     }
+    // }
+
+    // async getLunbotu() {
+    //   const {data: {status,message }} = await this.$http.get("api/getnewslist");
+    //     if (status === 0) {
+    //       this.lunbotuList = message;
+    //     } else {
+    //       Toast("获取失败");
+    //     }
+    // }
   }
 };
 </script>

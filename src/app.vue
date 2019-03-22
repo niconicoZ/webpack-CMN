@@ -44,6 +44,7 @@
 <style lang="less" scoped>
 .app-container {
 	padding-top: 40px;
+	padding-bottom: 50px;
 	//6.5 路由动画切换的时候 会撑宽盒子，产生了滑动条，所以X轴hidden
 	overflow-x: hidden;
 }
