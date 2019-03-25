@@ -1,12 +1,7 @@
 <template>
   <div>
     <!-- 4.2代入mint-ui中的轮播图样式  -->
-    <mt-swipe :auto="4000">
-      <!-- 7.4 获取数据后进行v-for进行循环遍历，在组件中，必须要加上　:key属性 -->
-      <mt-swipe-item v-for="item in lunbotuList" :key="item.id">
-        <img :src="item.img_url" alt>
-      </mt-swipe-item>
-    </mt-swipe>
+    <swipe :lunbotuList='lunbotuList' :isfull='true'></swipe>
 
     <!-- 4.3 代入 mint-ui 的九宫格 样式 -->
     <ul class="mui-table-view mui-grid-view mui-grid-9">
@@ -17,16 +12,16 @@
         </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/photo">
           <img src="./setutime/fz.jpg" alt="">
           <div class="mui-media-body">色图分享</div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
-        <a href="#">
+        <router-link to="/home/goodslist">
           <img src="./setutime/fz.jpg" alt="">
           <div class="mui-media-body">二刺源</div>
-        </a>
+        </router-link>
       </li>
       <li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3">
         <a href="#">
@@ -52,7 +47,8 @@
 
 <script>
 import { Toast } from "mint-ui";
-
+//引入 轮播图子组件
+import swipe from "../soncomponent/swipe.vue"
 
 export default {
   
@@ -97,30 +93,16 @@ export default {
     //       Toast("获取失败");
     //     }
     // }
+  },
+  components: {
+    swipe  //把引入的组件挂载到VM实例，然后进行视图渲染
   }
 };
 </script>
 
 <style lang="less" scoped>
 //4.2mint-ui框架的 轮播图没有设置高度，需要自己进行设置样式。
-.mint-swipe {
-  height: 200px;
-  .mint-swipe-item {
-    &:nth-child(1) {
-      background-size: cover;
-    }
-    &:nth-child(2) {
-      background-size: cover;
-    }
-    &:nth-child(3) {
-      background-size: cover;
-    }
-    img {
-      width: 100%;
-      height: 100%;
-    }
-  }
-}
+
 
 //4.3 修改 九宫格 样式
 .mui-grid-view.mui-grid-9 {

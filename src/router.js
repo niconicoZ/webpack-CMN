@@ -9,8 +9,15 @@ import menberContainer from './components/tabbar/menberContainer.vue'
 
 //引入 首页大弟子页面组件模块
 import NewList from './components/news/NewList.vue'
-//引入 新闻详情
+import Goodslist from './components/goodslist/goodslist.vue'
+//引入 新闻详情，色图专区,娃娃详情
 import SonList from './components/news/SonList.vue'
+import photoList from './components/photos/photoList.vue'
+import photoinfo from './components/photos/photoinfo.vue'
+import goodsinfo from './components/goodslist/goodsinfo.vue'
+import goodscomment from './components/goodslist/goodscomment.vue'
+import goodsdesc from './components/goodslist/goodsdesc.vue'
+
 
 
 //3.4 创建路由
@@ -26,8 +33,17 @@ var router = new VueRouter({
       {path : '/menber', component: menberContainer},
       //首页大弟子
       {path : '/home/news', component: NewList},
+      {path : '/home/goodslist',component: Goodslist },
       //新闻详情
-      {path : '/home/news/:id', component : SonList}
+      {path : '/home/news/:id', component : SonList},
+      //色图专区
+      {path : '/home/photo', component : photoList},
+      {path : '/home/photo/:id' ,component : photoinfo},
+      //娃娃详情
+      {path : '/home/goodsinfo/:id' , component : goodsinfo},
+      
+      {path : '/home/goodsdesc/:id' , component : goodsdesc, name:'goodsdesc'},
+      {path : '/home/goodscomment/:id' , component : goodscomment, name: 'goodscomment'}
 
     ],
 

@@ -2,9 +2,9 @@
   <div class="cmt-container">
     <h3>发表评论</h3>
     <hr>
-    <textarea placeholder="请输入您要夸的内容(最多夸120个字)" maxlength="120"></textarea>
+    <textarea placeholder="请输入您要夸的内容(最多夸120个字)" maxlength="120" v-model="msg"></textarea>
 
-    <mt-button type="primary" size="large">发表评论</mt-button>
+    <mt-button type="primary" size="large" @click="getcomment">发表评论</mt-button>
 
     <div class="cmt-list">
 
@@ -34,13 +34,15 @@ export default {
    data() {
      return {
        pageIndex : 1, //默认展示第一页数据
-       sonlist : []
+       sonlist : [],  //当前显示的所有评论内容 数组
+       msg: '' //评论内容
      }
    },
    created(){
      this.getbbmoments();
    },
    methods: {
+
      //获取评论
      getbbmoments() {
        this.$http.get('api/getcomments/'+ this.sonid +'?pageindex='+ this.pageIndex).then( result => {
@@ -54,10 +56,43 @@ export default {
            }
        })
      },
+
      // 点击获取更多评论
      getmore() {
         this.pageIndex++;
         this.getbbmoments()
+     },
+
+     //发表评论
+     //参数1：请求 URL地址
+     //参数2：提交给服务器的数据对象 { content : this.msg } 
+     //参数3：定义提交的，表单的数据的格式（已全局配置）
+     getcomment() {
+       //检测内容是否为空
+       if(this.msg.trim().length === 0) {
+         return Toast('请输入内容')
+       } 
+
+       this.$http.post('api/postcomment/' + this.sonid, { content : this.msg.trim()}).then(result => {
+           console.log(result);
+           if(result.body.status === 0) {
+             //提交成功后，手动拼接出一个评论对象，然后倒叙添加到 评论数组中
+             //问题：为什么不提交成功后，直接调用 获取评论方法，重绘页面呢？
+             //解决：因为获取评论方法 有显示当前多少页的参数，如果当前是第三页评论，那么调用刷新只会显示第三页的评论。
+
+             var newcmt = {
+                user_name: "福音战士",
+                add_time : Date.now(),
+                content : this.msg
+             };
+             //疑难点：所以我们直接对当前数据添加，利用webpack-dev-server中的热更新，实时刷新。
+             this.sonlist.unshift(newcmt);
+             this.msg = '';
+           }
+           else {
+             Tost('评论失败')
+           }
+       })
      }
      
    },

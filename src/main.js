@@ -32,12 +32,23 @@ Vue.filter('dataFormat',function(dataStr,pattern='YYYY-MM-DD HH:mm:ss'){
 })
 
 
-//4.按需 导入mint-ui 组件，并注册（头部，轮播图）
-import { Header,Swipe, SwipeItem, Button } from 'mint-ui';
-Vue.component(Header.name, Header);
-Vue.component(Swipe.name, Swipe);
-Vue.component(SwipeItem.name, SwipeItem);
-Vue.component(Button.name, Button);
+//4.按需 导入mint-ui 组件，并注册（头部，轮播图,按钮，懒加载）
+// import { Header,Swipe, SwipeItem, Button, Lazyload } from 'mint-ui';
+// Vue.component(Header.name, Header);
+// Vue.component(Swipe.name, Swipe);
+// Vue.component(SwipeItem.name, SwipeItem);
+// Vue.component(Button.name, Button);
+// Vue.use(Lazyload);
+
+//为了实现 懒加载的效果，实行导入全部组件
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+Vue.use(MintUI)
+
+
+// 安装 图片预览插件 1.0.3版本
+import VuePreview from 'vue-preview'
+Vue.use(VuePreview)
 
 
 //5.导入 MUI 框架样式
