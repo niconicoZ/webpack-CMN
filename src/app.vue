@@ -1,7 +1,11 @@
 <template>
   <div class="app-container">
     <!-- 顶部 Header 区域 -->
-    <mt-header fixed title="尼裙摸鱼wdnmd"></mt-header>
+    <mt-header fixed title="尼裙摸鱼wdnmd">
+			<router-link to="/" slot="left" @click="goback" v-show="flag">
+         <mt-button icon="back">返回</mt-button>
+      </router-link>
+		</mt-header>
 
 
     <!-- 内容的 路由视图 router-view 区域 -->
@@ -25,7 +29,7 @@
 			</router-link>
 			<router-link class="mui-tab-item-2b" to="shopcar">
 				<span class="mui-icon mui-icon-extra mui-icon-extra-cart">
-					<span class="mui-badge" id="badge">0</span>
+					<span class="mui-badge" id="badge">{{ $store.getters.getAllCount }}</span>
 				</span>
 				<span class="mui-tab-label">购物车</span>
 			</router-link>
@@ -39,6 +43,34 @@
 </template>
 
 <script>
+export default {
+	data() {
+		return {
+       flag : false
+		}
+	},
+	created(){
+		//我们要在未刷新页面之前做一个判断，如果是home就不显示后退，如果不是就显示
+		this.flag = this.$route.path === '/home' ? false : true
+	},
+	methods: {
+		goback() {
+			this.$router.go(-1)
+		}
+	},
+	watch: {
+		//watch监听
+		//监听url地址，如果是首页，就隐藏返回
+		'$route.path': function(newVal) {
+			if(newVal === '/home' ){
+         this.flag = false
+			}
+			else {
+         this.flag = true
+			}
+		}
+	}
+}
 </script>
 
 <style lang="less" scoped>

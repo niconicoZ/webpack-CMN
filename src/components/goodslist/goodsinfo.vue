@@ -35,7 +35,7 @@
             <p>购买数量：<numbox @getcount='getson' :max='sb.stock_quantity'> </numbox>  </p>
             <p> 
                 <mt-button type='primary' size='small'>立即购买</mt-button>
-                <mt-button  type='danger' size='small' @click="addball">加入购物车</mt-button>
+                <mt-button  type='danger' size='small' @click="addball" :disabled='isda'>加入购物车</mt-button>
 
           <!-- 问题：当子组件 数字选择框发生数值变化的时候，父组件如果拿到变化的值？
                 解决：1. 加入购物车按钮 为info页面， 数据选择框为 numbox组件
@@ -71,6 +71,7 @@ import swipe from '../soncomponent/swipe.vue'
 //引入数字选择框 子组件
 import numbox from '../soncomponent/numbox.vue'
 
+
 export default {
     data() {
        return{
@@ -78,7 +79,8 @@ export default {
          lunbotuList : [], //轮播图的数据
          sb : [], //获取商品的信息
          isflag : false, //控制小球隐藏显示
-         father : 1 //父亲接受儿子的传来的数据，默认为 1
+         father : 1, //父亲接受儿子的传来的数据，默认为 1
+         isda : false  //控制小球的 节流阀
        }
     },
     created(){
@@ -118,9 +120,33 @@ export default {
         goodscomment(id) {
             this.$router.push({ name : 'goodscomment', params : { id } })
         },
-        //小球显示隐藏切换及半场钩子动画函数
+        //点击购物车启动此方法，1.开启小球隐藏和显示 2.收集购买商品的信息
         addball() {
           this.isflag = !this.isflag
+
+          //给小球动画做一个节流阀，当点击开始动画的时候，就禁用掉按钮，然后设置一个定时器，等动画完成再把按钮恢复。
+          this.isda = true;
+          setTimeout(() => {
+            this.isda = !this.isda;
+          },1000)
+
+          //2.收集用户要加入购物车的商品信息
+          //{ id:商品的id, count:要购买的数量 , price: 商品的单价, selected :false }
+          //拼接出一个，要保存到 store 中的 car 数组中的 商品信息对象
+          var goodsinfo = {
+            id: this.id,
+            count : this.father,
+            price : this.sb.sell_price,
+            selected : true
+          }
+
+          //3.调用mutations中的添加到car中的方法
+          // this.$store.commit('addToCar',goodsinfo);
+
+          // 使用actions调用mutation中添加到car的方法
+          this.$store.dispatch('addToCar',goodsinfo)
+
+
         },
         beforeEnter(el) {
            el.style.transform='translate(0,0)'
@@ -150,6 +176,7 @@ export default {
         },
         afterEnter(el) {
           this.isflag = !this.isflag
+
         },
         //父向子传递一个获取子的数据方法,然后绑定到子组件中
         getson(count) {
