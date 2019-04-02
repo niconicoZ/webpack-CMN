@@ -120,6 +120,8 @@ export default {
         goodscomment(id) {
             this.$router.push({ name : 'goodscomment', params : { id } })
         },
+
+        
         //点击购物车启动此方法，1.开启小球隐藏和显示 2.收集购买商品的信息
         addball() {
           this.isflag = !this.isflag

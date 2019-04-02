@@ -5,8 +5,13 @@
 </template>
 
 <script>
+import sb from 'better-scroll'
+
+
 export default {
-    
+    mounted() {
+        
+    }
 }
 </script>
 
